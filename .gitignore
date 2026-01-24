@@ -12,3 +12,7 @@ node_modules/
 # Build
 build/
 dist/
+
+__pycache__/
+*.pyc
+
