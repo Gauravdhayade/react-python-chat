@@ -3,10 +3,10 @@ from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
 from passlib.context import CryptContext
 
-from database import SessionLocal
-from models import User, Message
-from schemas import RegisterSchema
-from jwt_utils import create_access_token, verify_token
+from backend.database import SessionLocal
+from backend.models import User, Message
+from backend.schemas import RegisterSchema
+from backend.jwt_utils import create_access_token, verify_token
 
 router = APIRouter()
 pwd = CryptContext(schemes=["bcrypt"], deprecated="auto")
