@@ -3,10 +3,10 @@ from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
 from passlib.context import CryptContext
 
-from backend.database import SessionLocal
-from backend.models import User, Message
-from backend.schemas import RegisterSchema
-from backend.jwt_utils import create_access_token, verify_token
+from database import SessionLocal
+from models import User, Message
+from schemas import RegisterSchema
+from jwt_utils import create_access_token, verify_token
 
 router = APIRouter()
 pwd = CryptContext(schemes=["bcrypt"], deprecated="auto")
@@ -69,13 +69,14 @@ def login(
     }
 
 
-# ---------- GET USERS ----------
+# ---------- USERS ----------
 @router.get("/users")
 def get_users(
     user_id: int = Depends(verify_token),
     db: Session = Depends(get_db)
 ):
     users = db.query(User).filter(User.id != user_id).all()
+
     return [
         {
             "id": u.id,
@@ -87,7 +88,7 @@ def get_users(
     ]
 
 
-# ---------- GET MESSAGES ----------
+# ---------- MESSAGES ----------
 @router.get("/messages/{receiver_id}")
 def get_messages(
     receiver_id: int,
