@@ -1,12 +1,12 @@
-from fastapi import FastAPI, WebSocket
+from fastapi import FastAPI, WebSocket, Query
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from fastapi.requests import Request
 
-from auth import router
-from websocket_chat import websocket_endpoint
+from app.api.v1.auth import router
+from app.websocket.chat import websocket_endpoint
 
-app = FastAPI()
+app = FastAPI(title="Chat App", version="1.0.0")
 
 app.add_middleware(
     CORSMiddleware,
@@ -16,16 +16,13 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.include_router(router)
+app.include_router(router, prefix="/auth", tags=["auth"])
 
 @app.websocket("/ws/chat")
-async def chat_ws(websocket: WebSocket, token: str):
-    await websocket_endpoint(websocket, token)
-
-
-# ---------------- WEBSOCKET ----------------
-@app.websocket("/ws/chat")
-async def chat_ws(websocket: WebSocket, token: str):
+async def chat_ws(websocket: WebSocket, token: str = Query(...)):
+    """
+    WebSocket endpoint: ws://localhost:8000/ws/chat?token=YOUR_JWT
+    """
     await websocket_endpoint(websocket, token)
 
 # ---------------- GLOBAL EXCEPTION HANDLER ----------------
@@ -39,3 +36,8 @@ async def global_exception_handler(request: Request, exc: Exception):
             "error": str(exc)
         }
     )
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run("app.main:app", host="0.0.0.0", port=8000, reload=True)
+

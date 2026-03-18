@@ -1,0 +1,80 @@
+/* Modern WhatsApp/Discord Dark Theme - Global */
+:root {
+  /* Dark Theme Base */
+  --bg-primary: #0f0f23;
+  --bg-secondary: #181921;
+  --bg-tertiary: #212134;
+  
+  /* Surfaces */
+  --surface-primary: rgba(24, 25, 33, 0.95);
+  --surface-hover: rgba(255, 255, 255, 0.04);
+  --surface-glass: rgba(255, 255, 255, 0.08);
+  
+  /* Text */
+  --text-primary: #e8e9ed;
+  --text-secondary: #b0b3c1;
+  --text-muted: #6b7280;
+  
+  /* Accents */
+  --accent-green: #00ba7c;
+  --accent-green-hover: #059669;
+  --accent-purple: #8b5cf6;
+  --accent-blue: #3b82f6;
+  --status-online: #00ba7c;
+  
+  /* Borders/Shadows */
+  --border-color: rgba(255, 255, 255, 0.08);
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.2);
+  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 20px 40px rgba(0, 0, 0, 0.4);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body, #root {
+  height: 100%;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Inter, Roboto, sans-serif;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  overflow: hidden;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-secondary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--text-muted);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-secondary);
+}
+
+/* Glassmorphism Base */
+.glass {
+  backdrop-filter: blur(20px);
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+/* Smooth Transitions */
+* {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none;
+  }
+}
