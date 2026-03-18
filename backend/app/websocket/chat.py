@@ -4,9 +4,9 @@ from jose import jwt, JWTError
 from typing import Dict, Any
 import json
 
-from backend.database import SessionLocal
-from backend.models import Message, User
-from backend.jwt_utils import SECRET_KEY, ALGORITHM
+from database import SessionLocal
+from models import Message, User
+from jwt_utils import SECRET_KEY, ALGORITHM
 
 class ConnectionManager:
     def __init__(self):

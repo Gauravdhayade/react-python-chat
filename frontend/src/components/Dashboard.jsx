@@ -12,7 +12,7 @@ export default function Dashboard() {
 
   const filteredUsers = users.filter(
     (u) =>
-      u.name.toLowerCase().includes(search.toLowerCase()) ||
+      (u.username || u.name).toLowerCase().includes(search.toLowerCase()) ||
       u.email.toLowerCase().includes(search.toLowerCase())
   );
 
@@ -20,7 +20,7 @@ export default function Dashboard() {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const res = await api.get("/users");
+        const res = await api.get("/auth/users");   // 🔥 FIXED
         setLocalUsers(res.data);
         setUsers(res.data);
       } catch (err) {
@@ -77,17 +77,17 @@ export default function Dashboard() {
               onClick={() =>
                 navigate(`/chat/${u.id}`, {
                   state: {
-                    name: u.name,
+                    name: u.username || u.name,   // 🔥 FIXED
                     is_online: u.is_online,
                   },
                 })
               }
             >
               <div className="user-avatar">
-                {u.name.charAt(0).toUpperCase()}
+                {(u.username || u.name).charAt(0).toUpperCase()}
               </div>
               <div>
-                <div>{u.name}</div>
+                <div>{u.username || u.name}</div>   {/* 🔥 FIXED */}
                 <div>{u.email}</div>
               </div>
             </div>

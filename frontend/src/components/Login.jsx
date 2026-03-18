@@ -23,11 +23,11 @@ export default function Login() {
       formData.append("username", email);
       formData.append("password", password);
 
-      const res = await api.post("/login", formData, {
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
-      });
+      const res = await api.post("/auth/login", formData, {
+  headers: {
+    "Content-Type": "application/x-www-form-urlencoded",
+  },
+});
 
       localStorage.setItem("token", res.data.access_token);
       localStorage.setItem("user_id", res.data.user_id);

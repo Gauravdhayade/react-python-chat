@@ -18,33 +18,37 @@ export default function Chat() {
   const ws = useRef(null);
   const endRef = useRef(null);
 
-  // ✅ Fetch user info (fix warning + bug)
+  // ✅ Fetch user info
   useEffect(() => {
     if (location.state) return;
 
-    api.get("/users").then((res) => {
-      const user = res.data.find((u) => u.id === Number(id));
-      if (user) {
-        setUserName(user.name);
-        setIsOnline(user.is_online);
-      }
-    });
+    api.get("/auth/users")   // 🔥 FIXED
+      .then((res) => {
+        const user = res.data.find((u) => u.id === Number(id));
+        if (user) {
+          setUserName(user.username || user.name);
+          setIsOnline(user.is_online);
+        }
+      })
+      .catch(console.error);
   }, [id, location.state]);
 
   // ✅ Load messages + websocket
   useEffect(() => {
-    api.get(`/messages/${id}`).then((res) => {
-      setMessages(
-        res.data.map((m) => ({
-          fromMe: m.sender_id === myId,
-          text: m.message,
-          time: new Date(m.timestamp).toLocaleTimeString([], {
-            hour: "2-digit",
-            minute: "2-digit",
-          }),
-        }))
-      );
-    });
+    api.get(`/auth/messages/${id}`)   // 🔥 FIXED
+      .then((res) => {
+        setMessages(
+          res.data.map((m) => ({
+            fromMe: m.sender_id === myId,
+            text: m.message,
+            time: new Date(m.timestamp).toLocaleTimeString([], {
+              hour: "2-digit",
+              minute: "2-digit",
+            }),
+          }))
+        );
+      })
+      .catch(console.error);
 
     const token = localStorage.getItem("token");
     if (!token) return;
@@ -106,7 +110,6 @@ export default function Chat() {
 
   return (
     <div className="chat-container">
-      {/* HEADER */}
       <div className="chat-header">
         <div>
           <h3>{userName}</h3>
@@ -116,7 +119,6 @@ export default function Chat() {
         </div>
       </div>
 
-      {/* MESSAGES */}
       <div className="chat-messages">
         {messages.map((m, i) => (
           <div key={i} className={`message ${m.fromMe ? "me" : "other"}`}>
@@ -131,7 +133,6 @@ export default function Chat() {
         <div ref={endRef}></div>
       </div>
 
-      {/* INPUT */}
       <div className="chat-input">
         <input
           value={text}
